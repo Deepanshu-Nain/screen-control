@@ -130,9 +130,9 @@ export default function TrainingWizard({ isOpen, onClose, onTrain, classifier, g
                             </select>
                         </div>
                         <div className="modal-actions">
-                            <button className="btn btn-secondary" onClick={onClose}>Cancel</button>
+                            <button className="px-4 py-2 rounded-xl border border-slate-600 text-slate-300 bg-transparent cursor-pointer hover:bg-slate-800 hover:border-indigo-500/50 hover:text-slate-100 transition-all duration-300" onClick={onClose}>Cancel</button>
                             <button
-                                className="btn btn-primary"
+                                className="px-6 py-2 rounded-full bg-gradient-to-b from-indigo-500 to-indigo-600 text-white text-sm font-semibold cursor-pointer focus:ring-2 focus:ring-indigo-400 hover:shadow-xl hover:shadow-indigo-500/25 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none transition duration-200"
                                 onClick={handleStartRecording}
                                 disabled={!gestureName.trim()}
                             >
@@ -213,7 +213,7 @@ export default function TrainingWizard({ isOpen, onClose, onTrain, classifier, g
                         </div>
 
                         <div className="modal-actions">
-                            <button className="btn btn-secondary" onClick={() => {
+                            <button className="px-4 py-2 rounded-xl border border-slate-600 text-slate-300 bg-transparent cursor-pointer hover:bg-slate-800 hover:border-indigo-500/50 hover:text-slate-100 transition-all duration-300" onClick={() => {
                                 // Re-record
                                 classifier.removeGesture(gestureName);
                                 setRecordedFrames(0);
@@ -222,7 +222,7 @@ export default function TrainingWizard({ isOpen, onClose, onTrain, classifier, g
                             }}>
                                 ↩ Re-record
                             </button>
-                            <button className="btn btn-primary" onClick={handleComplete}>
+                            <button className="px-6 py-2 rounded-full bg-gradient-to-b from-emerald-500 to-emerald-600 text-white text-sm font-semibold cursor-pointer focus:ring-2 focus:ring-emerald-400 hover:shadow-xl hover:shadow-emerald-500/25 transition duration-200" onClick={handleComplete}>
                                 Save Gesture ✓
                             </button>
                         </div>

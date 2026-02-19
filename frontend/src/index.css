@@ -1,8 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
 /* ============================================
    GESTURE CONTROL WEB APP — DESIGN SYSTEM
    ============================================ */
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 :root {
   /* Color Palette — Dark Slate (lighter) */
@@ -1052,6 +1053,21 @@ body {
   100% {
     background-position: -200% center;
   }
+}
+
+/* Shimmer animation for Aceternity button */
+@keyframes shimmer {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@utility animate-shimmer {
+  animation: shimmer 2s linear infinite;
 }
 
 /* ============================================

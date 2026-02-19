@@ -1,12 +1,13 @@
 /**
  * BackgroundBoxes — Aceternity-style isometric grid background.
- * Ported to vanilla React + CSS (no Tailwind/shadcn dependencies).
+ * Uses Tailwind CSS + cn() utility for styling.
  *
  * An isometric grid of cells that light up with random colors on hover.
- * Grid size reduced from 150×100 to 40×30 for performance.
+ * Grid size: 40×30 for performance.
  */
 import React, { useMemo } from 'react';
 import { motion } from 'motion/react';
+import { cn } from '@/lib/utils';
 
 const COLORS = [
     '#818cf8', '#f9a8d4', '#86efac', '#fde047',
@@ -25,7 +26,10 @@ function BoxesCore({ className = '' }) {
 
     return (
         <div
-            className={`boxes-grid ${className}`}
+            className={cn(
+                'absolute -top-1/4 left-1/4 z-[1] flex h-[200%] w-[200%] p-4',
+                className
+            )}
             style={{
                 transform:
                     'translate(-40%,-60%) skewX(-48deg) skewY(14deg) scale(0.675) rotate(0deg) translateZ(0)',
@@ -34,7 +38,7 @@ function BoxesCore({ className = '' }) {
             {rows.map((_, i) => (
                 <motion.div
                     key={`row${i}`}
-                    className="boxes-row"
+                    className="relative h-8 w-16 shrink-0 border-l border-slate-600/70"
                 >
                     {cols.map((_, j) => (
                         <motion.div
@@ -46,7 +50,7 @@ function BoxesCore({ className = '' }) {
                                 transition: { duration: 2 },
                             }}
                             key={`col${j}`}
-                            className="boxes-cell"
+                            className="relative h-8 w-16 border-t border-r border-slate-600/70"
                         >
                             {j % 2 === 0 && i % 2 === 0 ? (
                                 <svg
@@ -55,7 +59,7 @@ function BoxesCore({ className = '' }) {
                                     viewBox="0 0 24 24"
                                     strokeWidth="1.5"
                                     stroke="currentColor"
-                                    className="boxes-plus-icon"
+                                    className="pointer-events-none absolute -top-3.5 -left-5.5 h-6 w-10 stroke-1 text-slate-600/50"
                                 >
                                     <path
                                         strokeLinecap="round"

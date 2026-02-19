@@ -94,8 +94,7 @@ export default function GesturePanel({
                                         </div>
                                     )}
                                     <button
-                                        className="btn btn-danger"
-                                        style={{ padding: '4px 8px', fontSize: '11px', marginLeft: '4px' }}
+                                        className="px-2 py-1 ml-1 rounded-md border border-red-500/25 bg-red-500/10 text-red-400 text-[11px] cursor-pointer hover:bg-red-500/20 hover:border-red-500/50 hover:shadow-[0_0_20px_rgba(239,68,68,0.15)] transition-all duration-300"
                                         onClick={() => onDeleteGesture(name)}
                                         title="Delete gesture"
                                     >
@@ -141,16 +140,14 @@ export default function GesturePanel({
                                     </div>
                                     {!isMapped && (
                                         <button
-                                            className="btn btn-primary"
-                                            style={{ padding: '4px 8px', fontSize: '10px' }}
+                                            className="px-2 py-1 rounded-md bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-[10px] font-semibold cursor-pointer hover:shadow-[0_0_20px_rgba(99,102,241,0.35)] hover:-translate-y-0.5 transition-all duration-300"
                                             onClick={() => onTrainSuggested(ca.prompt, ca.id)}
                                         >
                                             Train
                                         </button>
                                     )}
                                     <button
-                                        className="btn btn-danger"
-                                        style={{ padding: '4px 8px', fontSize: '11px', marginLeft: '4px' }}
+                                        className="px-2 py-1 ml-1 rounded-md border border-red-500/25 bg-red-500/10 text-red-400 text-[11px] cursor-pointer hover:bg-red-500/20 hover:border-red-500/50 hover:shadow-[0_0_20px_rgba(239,68,68,0.15)] transition-all duration-300"
                                         onClick={() => onDeleteCustomAction(ca.id)}
                                         title="Delete custom action"
                                     >
@@ -166,15 +163,18 @@ export default function GesturePanel({
             {/* Action Buttons */}
             <div className="sidebar-section">
                 <h2>⚡ Create</h2>
-                <button className="btn btn-primary btn-block" onClick={onOpenWizard}>
-                    ✨ Train Custom Gesture
+                <button className="w-full p-[3px] relative cursor-pointer" onClick={onOpenWizard}>
+                    <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg" />
+                    <div className="w-full px-4 py-2.5 bg-slate-950 rounded-[6px] relative group transition duration-200 text-white text-sm font-semibold text-center hover:bg-transparent">
+                        ✨ Train Custom Gesture
+                    </div>
                 </button>
                 <button
-                    className="btn btn-block"
-                    style={{ marginTop: '8px', background: 'linear-gradient(135deg, #8b5cf6, #6366f1)', color: 'white', border: 'none' }}
+                    className="w-full mt-2 px-4 py-2.5 rounded-lg relative bg-slate-700 text-white text-sm font-semibold cursor-pointer hover:shadow-2xl hover:shadow-white/[0.1] transition duration-200 border border-slate-600"
                     onClick={onOpenCustomCreator}
                 >
-                    🧠 Create AI Action
+                    <div className="absolute inset-x-0 h-px w-1/2 mx-auto -top-px shadow-2xl bg-gradient-to-r from-transparent via-violet-500 to-transparent" />
+                    <span className="relative z-20">🧠 Create AI Action</span>
                 </button>
             </div>
 

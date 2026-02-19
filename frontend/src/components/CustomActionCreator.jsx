@@ -79,7 +79,7 @@ export default function CustomActionCreator({ isOpen, onClose, onActionCreated }
                     {['Open Calculator', 'Take a Screenshot', 'Minimize All Windows', 'Open Notepad'].map(ex => (
                         <button
                             key={ex}
-                            className="example-chip"
+                            className="px-3.5 py-1.5 rounded-full border border-white/10 bg-white/[0.05] text-slate-400 text-xs cursor-pointer backdrop-blur-sm hover:border-indigo-500/50 hover:text-indigo-400 hover:bg-indigo-500/[0.08] disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-300"
                             onClick={() => setPrompt(ex)}
                             disabled={loading || status === 'success'}
                         >
@@ -106,12 +106,12 @@ export default function CustomActionCreator({ isOpen, onClose, onActionCreated }
                 )}
 
                 <div className="modal-actions">
-                    <button className="btn btn-secondary" onClick={() => { handleReset(); onClose(); }}>
+                    <button className="px-4 py-2 rounded-xl border border-slate-600 text-slate-300 bg-transparent cursor-pointer hover:bg-slate-800 hover:border-indigo-500/50 hover:text-slate-100 transition-all duration-300" onClick={() => { handleReset(); onClose(); }}>
                         Cancel
                     </button>
                     {status !== 'success' && (
                         <button
-                            className="btn btn-primary"
+                            className="px-6 py-2 rounded-full bg-gradient-to-b from-violet-500 to-violet-600 text-white text-sm font-semibold cursor-pointer focus:ring-2 focus:ring-violet-400 hover:shadow-xl hover:shadow-violet-500/25 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none transition duration-200"
                             onClick={handleCreate}
                             disabled={!prompt.trim() || loading}
                         >

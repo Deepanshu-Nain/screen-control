@@ -85,7 +85,7 @@ export default function AppSidebar({
                                                                 </span>
                                                             </div>
                                                             <button
-                                                                className="ace-btn-icon ace-btn-danger"
+                                                                className="w-7 h-7 flex items-center justify-center rounded-md border-none bg-transparent text-slate-500 cursor-pointer hover:bg-red-500/15 hover:text-red-400 transition duration-300"
                                                                 onClick={() => onDeleteGesture(name)}
                                                                 title="Delete"
                                                             >
@@ -95,7 +95,7 @@ export default function AppSidebar({
                                                     );
                                                 })
                                             )}
-                                            <button className="ace-btn-add" onClick={onOpenWizard}>
+                                            <button className="flex items-center gap-1.5 px-3 py-1.5 mt-1 rounded-md border border-dashed border-indigo-500/30 bg-transparent text-indigo-400 text-xs font-semibold cursor-pointer hover:bg-indigo-500/10 hover:border-indigo-500 hover:-translate-y-0.5 transition-all duration-300" onClick={onOpenWizard}>
                                                 <FiPlus size={14} /> Train New
                                             </button>
                                         </div>
@@ -110,7 +110,7 @@ export default function AppSidebar({
                                                 {suggestionsAvailable.slice(0, 4).map((g) => (
                                                     <button
                                                         key={g.name}
-                                                        className="ace-suggestion-btn"
+                                                        className="flex items-center justify-between w-full px-2.5 py-1.5 rounded-md border border-white/10 bg-white/[0.03] text-slate-400 text-xs cursor-pointer hover:bg-indigo-500/10 hover:border-indigo-500/40 hover:text-slate-200 hover:-translate-y-0.5 transition-all duration-300"
                                                         onClick={() => onTrainSuggested(g)}
                                                     >
                                                         <span>{g.emoji} {g.name}</span>
@@ -136,7 +136,7 @@ export default function AppSidebar({
                                                             <span className="ace-gesture-action">{a.description}</span>
                                                         </div>
                                                         <button
-                                                            className="ace-btn-icon ace-btn-danger"
+                                                            className="w-7 h-7 flex items-center justify-center rounded-md border-none bg-transparent text-slate-500 cursor-pointer hover:bg-red-500/15 hover:text-red-400 transition duration-300"
                                                             onClick={() => onDeleteCustomAction(i)}
                                                             title="Delete"
                                                         >
@@ -145,7 +145,7 @@ export default function AppSidebar({
                                                     </div>
                                                 ))
                                             )}
-                                            <button className="ace-btn-add" onClick={onOpenCustomCreator}>
+                                            <button className="flex items-center gap-1.5 px-3 py-1.5 mt-1 rounded-md border border-dashed border-violet-500/30 bg-transparent text-violet-400 text-xs font-semibold cursor-pointer hover:bg-violet-500/10 hover:border-violet-500 hover:-translate-y-0.5 transition-all duration-300" onClick={onOpenCustomCreator}>
                                                 <FiPlus size={14} /> Create Action
                                             </button>
                                         </div>
