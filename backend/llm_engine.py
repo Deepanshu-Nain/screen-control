@@ -44,7 +44,7 @@ that use PyAutoGUI and standard Windows tools to perform desktop tasks.
 
 RULES:
 1. ONLY use these imports: pyautogui, subprocess, time, os
-2. Keep code under 20 lines
+2. Keep code under 40 lines
 3. Use pyautogui for keyboard/mouse control
 4. Use subprocess.Popen for opening applications
 5. Use time.sleep() for delays between actions

@@ -261,10 +261,10 @@ export default function App() {
 
   return (
     <>
-      {/* Aceternity Boxes Background — sits OUTSIDE the grid to not consume a grid cell */}
+      {/* Aceternity Boxes Background */}
       <div className="boxes-bg-root">
-        <div className="boxes-bg-mask" />
         <Boxes />
+        <div className="boxes-bg-mask" />
       </div>
 
       <div className="app-shell">

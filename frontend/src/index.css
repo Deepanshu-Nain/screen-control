@@ -6,12 +6,12 @@
    ============================================ */
 
 :root {
-  /* Color Palette — Dark Slate (lighter) */
-  --bg-primary: #0f172a;
-  --bg-secondary: #1e293b;
-  --bg-card: rgba(30, 41, 59, 0.7);
-  --bg-glass: rgba(255, 255, 255, 0.06);
-  --border-glass: rgba(255, 255, 255, 0.10);
+  /* Color Palette — Dark Gray */
+  --bg-primary: #18181b;
+  --bg-secondary: #232326;
+  --bg-card: rgba(36, 36, 38, 0.7);
+  --bg-glass: rgba(255, 255, 255, 0.04);
+  --border-glass: rgba(255, 255, 255, 0.08);
 
   --accent-primary: #6366f1;
   /* Indigo */
@@ -115,9 +115,10 @@ body {
   grid-template-rows: 64px 1fr;
   gap: 0;
   height: 100vh;
-  background: var(--bg-primary);
+  background: transparent;
   position: relative;
   overflow: hidden;
+  z-index: 1;
 }
 
 /* ============================================
@@ -139,11 +140,9 @@ body {
   inset: 0;
   width: 100%;
   height: 100%;
-  background: var(--bg-primary);
   z-index: 2;
-  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, transparent 30%, black 100%);
-  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, transparent 30%, black 100%);
   pointer-events: none;
+  background: radial-gradient(ellipse 60% 50% at 50% 50%, transparent 0%, var(--bg-primary) 100%);
 }
 
 .boxes-grid {

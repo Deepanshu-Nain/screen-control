@@ -1,13 +1,12 @@
 /**
  * BackgroundBoxes — Aceternity-style isometric grid background.
- * Uses Tailwind CSS + cn() utility for styling.
+ * Uses inline styles for borders to guarantee rendering with any Tailwind version.
  *
  * An isometric grid of cells that light up with random colors on hover.
  * Grid size: 40×30 for performance.
  */
 import React, { useMemo } from 'react';
 import { motion } from 'motion/react';
-import { cn } from '@/lib/utils';
 
 const COLORS = [
     '#818cf8', '#f9a8d4', '#86efac', '#fde047',
@@ -18,6 +17,24 @@ function getRandomColor() {
     return COLORS[Math.floor(Math.random() * COLORS.length)];
 }
 
+const BORDER_COLOR = 'rgba(71, 85, 105, 0.5)';
+
+const rowStyle = {
+    position: 'relative',
+    height: 32,
+    width: 64,
+    flexShrink: 0,
+    borderLeft: `1px solid ${BORDER_COLOR}`,
+};
+
+const cellStyle = {
+    position: 'relative',
+    height: 32,
+    width: 64,
+    borderTop: `1px solid ${BORDER_COLOR}`,
+    borderRight: `1px solid ${BORDER_COLOR}`,
+};
+
 function BoxesCore({ className = '' }) {
     const rowCount = 40;
     const colCount = 30;
@@ -26,20 +43,22 @@ function BoxesCore({ className = '' }) {
 
     return (
         <div
-            className={cn(
-                'absolute -top-1/4 left-1/4 z-[1] flex h-[200%] w-[200%] p-4',
-                className
-            )}
+            className={className}
             style={{
+                position: 'absolute',
+                top: '-25%',
+                left: '25%',
+                zIndex: 1,
+                display: 'flex',
+                height: '200%',
+                width: '200%',
+                padding: 16,
                 transform:
                     'translate(-40%,-60%) skewX(-48deg) skewY(14deg) scale(0.675) rotate(0deg) translateZ(0)',
             }}
         >
             {rows.map((_, i) => (
-                <motion.div
-                    key={`row${i}`}
-                    className="relative h-8 w-16 shrink-0 border-l border-slate-600/70"
-                >
+                <motion.div key={`row${i}`} style={rowStyle}>
                     {cols.map((_, j) => (
                         <motion.div
                             whileHover={{
@@ -50,7 +69,7 @@ function BoxesCore({ className = '' }) {
                                 transition: { duration: 2 },
                             }}
                             key={`col${j}`}
-                            className="relative h-8 w-16 border-t border-r border-slate-600/70"
+                            style={cellStyle}
                         >
                             {j % 2 === 0 && i % 2 === 0 ? (
                                 <svg
@@ -59,7 +78,16 @@ function BoxesCore({ className = '' }) {
                                     viewBox="0 0 24 24"
                                     strokeWidth="1.5"
                                     stroke="currentColor"
-                                    className="pointer-events-none absolute -top-3.5 -left-5.5 h-6 w-10 stroke-1 text-slate-600/50"
+                                    style={{
+                                        pointerEvents: 'none',
+                                        position: 'absolute',
+                                        top: -14,
+                                        left: -22,
+                                        height: 24,
+                                        width: 40,
+                                        strokeWidth: 1,
+                                        color: 'rgba(71, 85, 105, 0.4)',
+                                    }}
                                 >
                                     <path
                                         strokeLinecap="round"
