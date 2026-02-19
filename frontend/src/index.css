@@ -321,9 +321,9 @@ body {
 .main-viewport {
   position: relative;
   display: flex;
-  align-items: stretch;
-  justify-content: stretch;
-  padding: 8px;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
   z-index: 5;
   overflow: hidden;
 }
@@ -331,7 +331,9 @@ body {
 .camera-container {
   position: relative;
   width: 100%;
-  height: 100%;
+  max-width: 900px;
+  aspect-ratio: 4 / 3;
+  max-height: 100%;
   border-radius: var(--radius-lg);
   overflow: hidden;
   background: rgba(17, 24, 39, 0.75);
@@ -342,10 +344,11 @@ body {
 .camera-container video {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   transform: scaleX(-1);
   /* Mirror */
   display: block;
+  background: #000;
 }
 
 .camera-container canvas {

@@ -25,7 +25,7 @@ export default function AppSidebar({
 }) {
     const [open, setOpen] = useState(false);
 
-    const trainedGestures = classifier?.getLabels?.() || [];
+    const trainedGestures = classifier?.getGestureNames?.() || [];
     const suggestionsAvailable = SUGGESTED_GESTURES.filter(
         (g) => !trainedGestures.includes(g.name)
     );
@@ -171,8 +171,8 @@ export default function AppSidebar({
                                                     <p className="ace-empty-hint">Create AI-powered actions with natural language</p>
                                                 </div>
                                             ) : (
-                                                customActions.map((a, i) => (
-                                                    <div key={i} className="ace-custom-item">
+                                                customActions.map((a) => (
+                                                    <div key={a.id} className="ace-custom-item">
                                                         <div className="ace-custom-icon-wrap">
                                                             <span className="ace-custom-icon">
                                                                 {a.prompt?.toLowerCase().includes('youtube') ? '📺' :
@@ -191,7 +191,7 @@ export default function AppSidebar({
                                                         </div>
                                                         <button
                                                             className="ace-delete-btn"
-                                                            onClick={() => onDeleteCustomAction(i)}
+                                                            onClick={() => onDeleteCustomAction(a.id)}
                                                             title="Delete action"
                                                         >
                                                             <FiTrash2 size={13} />
