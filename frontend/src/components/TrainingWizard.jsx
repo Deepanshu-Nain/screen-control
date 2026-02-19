@@ -25,8 +25,8 @@ export default function TrainingWizard({ isOpen, onClose, onTrain, classifier, g
     useEffect(() => {
         if (isOpen) {
             setStep('setup');
-            setGestureName(prefillName || '');
-            setSelectedAction(prefillAction || 'switch_tab');
+            setGestureName(String(prefillName || ''));
+            setSelectedAction(String(prefillAction || 'switch_tab'));
             setCountdown(COUNTDOWN_SECONDS);
             setRecordedFrames(0);
             setVerifyResult(null);

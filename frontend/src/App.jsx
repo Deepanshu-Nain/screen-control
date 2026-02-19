@@ -4,7 +4,7 @@
 
 import { useState, useRef, useCallback, useEffect, useMemo } from 'react';
 import CameraView from './components/CameraView';
-import { BackgroundRippleEffect } from './components/BackgroundRippleEffect';
+import { Boxes } from './components/BackgroundBoxes';
 import GesturePanel from './components/GesturePanel';
 import AppSidebar from './components/AppSidebar';
 import TrainingWizard from './components/TrainingWizard';
@@ -259,8 +259,11 @@ export default function App() {
 
   return (
     <>
-      {/* Aceternity Ripple Background — sits OUTSIDE the grid to not consume a grid cell */}
-      <BackgroundRippleEffect rows={12} cols={32} cellSize={48} />
+      {/* Aceternity Boxes Background — sits OUTSIDE the grid to not consume a grid cell */}
+      <div className="boxes-bg-root">
+        <div className="boxes-bg-mask" />
+        <Boxes />
+      </div>
 
       <div className="app-shell">
         {/* Header */}
@@ -288,17 +291,29 @@ export default function App() {
           </div>
         </header>
 
-        {/* Camera Viewport — only visible when active */}
-        {isActive && (
-          <CameraView
-            ref={cameraRef}
-            isActive={isActive}
-            onLandmarks={handleLandmarks}
-            gestureLabel={appMode === 'mouse' ? (mouseInfo.clicking ? `${mouseInfo.clicking} click!` : '🖱️ Mouse Mode') : activeGesture}
-            gestureState={appMode === 'mouse' ? (mouseInfo.clicking ? 'detected' : 'mouse') : gestureState}
-            appMode={appMode}
-          />
-        )}
+        {/* Main Content Area */}
+        <main className="main-viewport">
+          {isActive ? (
+            <CameraView
+              ref={cameraRef}
+              isActive={isActive}
+              onLandmarks={handleLandmarks}
+              gestureLabel={appMode === 'mouse' ? (mouseInfo.clicking ? `${mouseInfo.clicking} click!` : '🖱️ Mouse Mode') : activeGesture}
+              gestureState={appMode === 'mouse' ? (mouseInfo.clicking ? 'detected' : 'mouse') : gestureState}
+              appMode={appMode}
+            />
+          ) : (
+            /* Hero Section — visible when inactive */
+            <div className="hero-section">
+              <h2 className="hero-title">
+                Control Your Screen<br />With Hand Gestures
+              </h2>
+              <p className="hero-subtitle">
+                Wave, pinch, point — your webcam sees it all. Train custom gestures, map them to any action, and take full control of your computer without ever touching the keyboard.
+              </p>
+            </div>
+          )}
+        </main>
 
         {/* Aceternity Collapsible Sidebar — always visible */}
         <AppSidebar
