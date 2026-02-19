@@ -1,0 +1,7 @@
+{
+  "custom_bd28b930": {
+    "id": "custom_bd28b930",
+    "prompt": "open youtube",
+    "code": "import subprocess\nsubprocess.Popen(\"start https://www.youtube.com\", shell=True)"
+  }
+}
