@@ -3,5 +3,10 @@
     "id": "custom_bd28b930",
     "prompt": "open youtube",
     "code": "import subprocess\nsubprocess.Popen(\"start https://www.youtube.com\", shell=True)"
+  },
+  "custom_c43116f3": {
+    "id": "custom_c43116f3",
+    "prompt": "Open Calculator",
+    "code": "import subprocess\nsubprocess.Popen(\"calc.exe\")"
   }
 }

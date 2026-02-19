@@ -1,11 +1,11 @@
 /**
  * AppSidebar — Aceternity-style collapsible sidebar.
  * Collapses to icon-only (60px) and expands on hover (280px).
- * Holds gesture panel or mouse control content based on mode.
+ * Shows: Trained gestures, Suggestions to train, Custom actions.
  */
 import { useState, createContext, useContext } from 'react';
-import { FiActivity, FiMousePointer, FiPlus, FiTrash2, FiZap, FiCrosshair, FiTarget, FiLayers } from 'react-icons/fi';
-import { AVAILABLE_ACTIONS, SUGGESTED_GESTURES } from '../config/gestures.jsx';
+import { FiActivity, FiMousePointer, FiPlus, FiTrash2, FiZap, FiCrosshair, FiTarget, FiLayers, FiCheck, FiChevronRight } from 'react-icons/fi';
+import { AVAILABLE_ACTIONS, SUGGESTED_GESTURES, BUILTIN_ACTIONS } from '../config/gestures.jsx';
 
 const SidebarContext = createContext({ open: false });
 
@@ -30,6 +30,17 @@ export default function AppSidebar({
         (g) => !trainedGestures.includes(g.name)
     );
 
+    // Helper to get action label from action id
+    const getActionLabel = (actionId) => {
+        const action = AVAILABLE_ACTIONS.find(a => a.id === actionId);
+        return action ? action.label || action.name : actionId;
+    };
+
+    const getActionIcon = (actionId) => {
+        const action = [...BUILTIN_ACTIONS, ...AVAILABLE_ACTIONS].find(a => a.id === actionId);
+        return action?.icon || '⚡';
+    };
+
     return (
         <SidebarContext.Provider value={{ open }}>
             <aside
@@ -48,7 +59,7 @@ export default function AppSidebar({
                     <nav className="ace-sidebar-nav">
                         {appMode === 'gesture' ? (
                             <>
-                                {/* Stats */}
+                                {/* Live Detection Stats */}
                                 <SidebarSection icon={<FiActivity />} label="Live Detection">
                                     {open && (
                                         <div className="ace-sidebar-stats">
@@ -64,88 +75,131 @@ export default function AppSidebar({
                                     )}
                                 </SidebarSection>
 
-                                {/* Trained gestures */}
+                                {/* ── Trained Gestures ── */}
                                 <SidebarSection icon={<FiLayers />} label={`Trained (${trainedGestures.length})`}>
                                     {open && (
                                         <div className="ace-sidebar-list">
                                             {trainedGestures.length === 0 ? (
-                                                <p className="ace-sidebar-muted">No gestures trained yet</p>
+                                                <div className="ace-empty-state">
+                                                    <span className="ace-empty-icon">🎯</span>
+                                                    <p className="ace-empty-text">No gestures trained yet</p>
+                                                    <p className="ace-empty-hint">Train your first gesture to get started</p>
+                                                </div>
                                             ) : (
                                                 trainedGestures.map((name) => {
                                                     const mapping = gestureMapping[name];
+                                                    const isActive = activeGesture === name;
                                                     return (
                                                         <div
                                                             key={name}
-                                                            className={`ace-gesture-item ${activeGesture === name ? 'ace-gesture-active' : ''}`}
+                                                            className={`ace-trained-item ${isActive ? 'ace-trained-active' : ''}`}
                                                         >
-                                                            <div className="ace-gesture-info">
-                                                                <span className="ace-gesture-name">{name}</span>
-                                                                <span className="ace-gesture-action">
-                                                                    {mapping ? (AVAILABLE_ACTIONS.find(a => a.id === mapping)?.name || mapping) : 'Unbound'}
+                                                            <div className="ace-trained-indicator">
+                                                                <span className={`ace-trained-dot ${isActive ? 'ace-dot-active' : ''}`} />
+                                                            </div>
+                                                            <div className="ace-trained-info">
+                                                                <span className="ace-trained-name">{name}</span>
+                                                                <span className="ace-trained-action">
+                                                                    {mapping ? (
+                                                                        <>
+                                                                            <FiChevronRight size={10} style={{ opacity: 0.5 }} />
+                                                                            <span>{getActionIcon(mapping)} {getActionLabel(mapping)}</span>
+                                                                        </>
+                                                                    ) : (
+                                                                        <span className="ace-unbound-tag">Unbound</span>
+                                                                    )}
                                                                 </span>
                                                             </div>
                                                             <button
-                                                                className="w-7 h-7 flex items-center justify-center rounded-md border-none bg-transparent text-slate-500 cursor-pointer hover:bg-red-500/15 hover:text-red-400 transition duration-300"
+                                                                className="ace-delete-btn"
                                                                 onClick={() => onDeleteGesture(name)}
-                                                                title="Delete"
+                                                                title="Delete gesture"
                                                             >
-                                                                <FiTrash2 size={14} />
+                                                                <FiTrash2 size={13} />
                                                             </button>
                                                         </div>
                                                     );
                                                 })
                                             )}
-                                            <button className="flex items-center gap-1.5 px-3 py-1.5 mt-1 rounded-md border border-dashed border-indigo-500/30 bg-transparent text-indigo-400 text-xs font-semibold cursor-pointer hover:bg-indigo-500/10 hover:border-indigo-500 hover:-translate-y-0.5 transition-all duration-300" onClick={onOpenWizard}>
-                                                <FiPlus size={14} /> Train New
+                                            <button className="ace-train-btn" onClick={onOpenWizard}>
+                                                <FiPlus size={14} /> Train New Gesture
                                             </button>
                                         </div>
                                     )}
                                 </SidebarSection>
 
-                                {/* Suggestions */}
+                                {/* ── Suggestions ── */}
                                 {suggestionsAvailable.length > 0 && (
-                                    <SidebarSection icon={<FiZap />} label="Suggestions">
+                                    <SidebarSection icon={<FiZap />} label={`Suggestions (${suggestionsAvailable.length})`}>
                                         {open && (
                                             <div className="ace-sidebar-list">
-                                                {suggestionsAvailable.slice(0, 4).map((g) => (
+                                                <p className="ace-section-hint">Train these gestures to unlock more controls</p>
+                                                {suggestionsAvailable.slice(0, 5).map((g) => (
                                                     <button
                                                         key={g.name}
-                                                        className="flex items-center justify-between w-full px-2.5 py-1.5 rounded-md border border-white/10 bg-white/[0.03] text-slate-400 text-xs cursor-pointer hover:bg-indigo-500/10 hover:border-indigo-500/40 hover:text-slate-200 hover:-translate-y-0.5 transition-all duration-300"
+                                                        className="ace-suggestion-item"
                                                         onClick={() => onTrainSuggested(g)}
                                                     >
-                                                        <span>{g.emoji} {g.name}</span>
-                                                        <FiPlus size={12} />
+                                                        <div className="ace-suggestion-left">
+                                                            <span className="ace-suggestion-emoji">{g.emoji}</span>
+                                                            <div className="ace-suggestion-text">
+                                                                <span className="ace-suggestion-name">{g.name}</span>
+                                                                <span className="ace-suggestion-desc">{g.description}</span>
+                                                            </div>
+                                                        </div>
+                                                        <span className="ace-suggestion-add">
+                                                            <FiPlus size={12} />
+                                                        </span>
                                                     </button>
                                                 ))}
+                                                {suggestionsAvailable.length > 5 && (
+                                                    <p className="ace-more-hint">+{suggestionsAvailable.length - 5} more available</p>
+                                                )}
                                             </div>
                                         )}
                                     </SidebarSection>
                                 )}
 
-                                {/* Custom actions */}
-                                <SidebarSection icon={<FiTarget />} label="Custom Actions">
+                                {/* ── Custom Actions ── */}
+                                <SidebarSection icon={<FiTarget />} label={`Custom (${customActions.length})`}>
                                     {open && (
                                         <div className="ace-sidebar-list">
                                             {customActions.length === 0 ? (
-                                                <p className="ace-sidebar-muted">No custom actions</p>
+                                                <div className="ace-empty-state">
+                                                    <span className="ace-empty-icon">🧠</span>
+                                                    <p className="ace-empty-text">No custom actions</p>
+                                                    <p className="ace-empty-hint">Create AI-powered actions with natural language</p>
+                                                </div>
                                             ) : (
                                                 customActions.map((a, i) => (
-                                                    <div key={i} className="ace-gesture-item">
-                                                        <div className="ace-gesture-info">
-                                                            <span className="ace-gesture-name">{a.name}</span>
-                                                            <span className="ace-gesture-action">{a.description}</span>
+                                                    <div key={i} className="ace-custom-item">
+                                                        <div className="ace-custom-icon-wrap">
+                                                            <span className="ace-custom-icon">
+                                                                {a.prompt?.toLowerCase().includes('youtube') ? '📺' :
+                                                                 a.prompt?.toLowerCase().includes('calculator') ? '🧮' :
+                                                                 a.prompt?.toLowerCase().includes('discord') ? '💬' :
+                                                                 a.prompt?.toLowerCase().includes('spotify') ? '🎵' :
+                                                                 a.prompt?.toLowerCase().includes('chrome') ? '🌐' :
+                                                                 a.prompt?.toLowerCase().includes('whatsapp') ? '💚' : '🧠'}
+                                                            </span>
+                                                        </div>
+                                                        <div className="ace-custom-info">
+                                                            <span className="ace-custom-name">{a.name || a.prompt}</span>
+                                                            <span className="ace-custom-prompt">
+                                                                {a.description || a.prompt}
+                                                            </span>
                                                         </div>
                                                         <button
-                                                            className="w-7 h-7 flex items-center justify-center rounded-md border-none bg-transparent text-slate-500 cursor-pointer hover:bg-red-500/15 hover:text-red-400 transition duration-300"
+                                                            className="ace-delete-btn"
                                                             onClick={() => onDeleteCustomAction(i)}
-                                                            title="Delete"
+                                                            title="Delete action"
                                                         >
-                                                            <FiTrash2 size={14} />
+                                                            <FiTrash2 size={13} />
                                                         </button>
                                                     </div>
                                                 ))
                                             )}
-                                            <button className="flex items-center gap-1.5 px-3 py-1.5 mt-1 rounded-md border border-dashed border-violet-500/30 bg-transparent text-violet-400 text-xs font-semibold cursor-pointer hover:bg-violet-500/10 hover:border-violet-500 hover:-translate-y-0.5 transition-all duration-300" onClick={onOpenCustomCreator}>
+                                            <button className="ace-custom-btn" onClick={onOpenCustomCreator}>
                                                 <FiPlus size={14} /> Create Action
                                             </button>
                                         </div>

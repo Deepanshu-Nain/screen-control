@@ -11,6 +11,7 @@ import TrainingWizard from './components/TrainingWizard';
 import CustomActionCreator from './components/CustomActionCreator';
 import { ToastContainer, useToast } from './components/Toast';
 import { TypewriterEffectSmooth } from './components/ui/typewriter-effect';
+import GestureNavbar from './components/GestureNavbar';
 import { useWebSocket } from './hooks/useWebSocket';
 import { GestureClassifier } from './engine/GestureClassifier';
 import { MouseController } from './engine/MouseController';
@@ -267,38 +268,13 @@ export default function App() {
       </div>
 
       <div className="app-shell">
-        {/* Header */}
-        <header className="header">
-          <div className="header-brand">
-            <div className="logo">🤚</div>
-            <h1>Gesture Control</h1>
-          </div>
-          <div className="header-status">
-            {/* Mode Toggle */}
-            <div
-              className="flex items-center gap-2.5 cursor-pointer px-3 py-1.5 rounded-xl bg-white/[0.06] border border-white/10 select-none hover:border-white/15 hover:bg-white/[0.06] transition-all duration-300"
-              onClick={toggleMode}
-            >
-              <span className={`text-[13px] font-semibold whitespace-nowrap tracking-tight transition-all duration-150 ${appMode === 'gesture' ? 'text-slate-100 drop-shadow-[0_0_12px_rgba(99,102,241,0.5)]' : 'text-slate-500'}`}>🎯 Gestures</span>
-              <div className={`relative w-10 h-[22px] rounded-full shrink-0 transition-all duration-300 ${appMode === 'mouse' ? 'bg-gradient-to-r from-indigo-500 to-violet-500 shadow-[0_0_12px_rgba(99,102,241,0.35)]' : 'bg-slate-600/40'}`}>
-                <div className={`absolute top-[3px] w-4 h-4 rounded-full bg-white shadow-sm transition-all duration-500 ${appMode === 'mouse' ? 'left-[21px]' : 'left-[3px]'}`} style={{ transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)' }} />
-              </div>
-              <span className={`text-[13px] font-semibold whitespace-nowrap tracking-tight transition-all duration-150 ${appMode === 'mouse' ? 'text-slate-100 drop-shadow-[0_0_12px_rgba(99,102,241,0.5)]' : 'text-slate-500'}`}>🖱️ Mouse</span>
-            </div>
-
-            <div
-              className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/[0.06] border border-white/10 cursor-pointer hover:border-indigo-500/30 transition-all duration-300"
-              onClick={() => setIsActive(!isActive)}
-            >
-              <div>
-                <div className={`text-[13px] font-bold tracking-tight transition-colors duration-300 ${isActive ? 'text-emerald-400' : 'text-slate-400'}`}>{isActive ? 'Active' : 'Inactive'}</div>
-              </div>
-              <button className={`relative w-12 h-[26px] rounded-full border-none outline-none shrink-0 cursor-pointer transition-all duration-300 ${isActive ? 'bg-indigo-500 shadow-[0_0_12px_rgba(99,102,241,0.35)]' : 'bg-slate-500'}`}>
-                <span className={`absolute top-[3px] left-[3px] w-5 h-5 rounded-full bg-white shadow-md transition-all duration-300 ${isActive ? 'translate-x-[22px]' : ''}`} />
-              </button>
-            </div>
-          </div>
-        </header>
+        {/* Resizable Navbar */}
+        <GestureNavbar
+          isActive={isActive}
+          appMode={appMode}
+          onToggleActive={() => setIsActive(!isActive)}
+          onToggleMode={toggleMode}
+        />
 
         {/* Main Content Area */}
         <main className="main-viewport">

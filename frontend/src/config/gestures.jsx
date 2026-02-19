@@ -59,13 +59,18 @@ export function mergeCustomActions(customActions) {
     }
 }
 
-// Suggested gestures for the "Needs Training" section
+// Suggested gestures for the "Suggestions" section
 export const SUGGESTED_GESTURES = [
-    { actionId: 'next_tab', suggestedGestureName: 'Next Tab' },
-    { actionId: 'prev_tab', suggestedGestureName: 'Previous Tab' },
-    { actionId: 'switch_app', suggestedGestureName: 'Switch App' },
-    { actionId: 'scroll_up', suggestedGestureName: 'Scroll Up' },
-    { actionId: 'scroll_down', suggestedGestureName: 'Scroll Down' },
+    { name: 'Swipe Right',  emoji: '👉', actionId: 'next_tab',     description: 'Next Tab' },
+    { name: 'Swipe Left',   emoji: '👈', actionId: 'prev_tab',     description: 'Previous Tab' },
+    { name: 'Open Palm',    emoji: '🖐️', actionId: 'switch_app',   description: 'Switch App' },
+    { name: 'Thumbs Up',    emoji: '👍', actionId: 'volume_up',    description: 'Volume Up' },
+    { name: 'Thumbs Down',  emoji: '👎', actionId: 'volume_down',  description: 'Volume Down' },
+    { name: 'Fist',         emoji: '✊', actionId: 'play_pause',   description: 'Play / Pause' },
+    { name: 'Peace Sign',   emoji: '✌️', actionId: 'scroll_up',    description: 'Scroll Up' },
+    { name: 'Point Down',   emoji: '👇', actionId: 'scroll_down',  description: 'Scroll Down' },
+    { name: 'Pinch',        emoji: '🤏', actionId: 'copy',         description: 'Copy' },
+    { name: 'Spread',       emoji: '🤚', actionId: 'paste',        description: 'Paste' },
 ];
 
 const MAPPING_KEY = 'gesture_action_mapping';

@@ -9,17 +9,33 @@ export function useWebSocket() {
     const [isConnected, setIsConnected] = useState(false);
     const wsRef = useRef(null);
     const reconnectTimerRef = useRef(null);
+    const mountedRef = useRef(false);
 
     const connect = useCallback(() => {
-        // Clean up previous
+        // Don't connect if unmounted
+        if (!mountedRef.current) return;
+
+        // Clear any pending reconnect
+        if (reconnectTimerRef.current) {
+            clearTimeout(reconnectTimerRef.current);
+            reconnectTimerRef.current = null;
+        }
+
+        // Clean up previous socket without triggering reconnect
         if (wsRef.current) {
+            wsRef.current.onclose = null;
+            wsRef.current.onerror = null;
+            wsRef.current.onopen = null;
+            wsRef.current.onmessage = null;
             wsRef.current.close();
+            wsRef.current = null;
         }
 
         try {
             const ws = new WebSocket(WS_URL);
 
             ws.onopen = () => {
+                if (!mountedRef.current) { ws.close(); return; }
                 console.log('[WS] Connected to backend');
                 setIsConnected(true);
             };
@@ -27,13 +43,15 @@ export function useWebSocket() {
             ws.onclose = () => {
                 console.log('[WS] Disconnected from backend');
                 setIsConnected(false);
-                // Auto-reconnect
-                reconnectTimerRef.current = setTimeout(connect, RECONNECT_INTERVAL);
+                // Only auto-reconnect if still mounted
+                if (mountedRef.current) {
+                    reconnectTimerRef.current = setTimeout(connect, RECONNECT_INTERVAL);
+                }
             };
 
             ws.onerror = (err) => {
                 console.warn('[WS] Connection error', err);
-                ws.close();
+                // onclose will fire after this, which handles reconnect
             };
 
             ws.onmessage = (event) => {
@@ -48,15 +66,30 @@ export function useWebSocket() {
             wsRef.current = ws;
         } catch (err) {
             console.warn('[WS] Failed to create WebSocket connection:', err);
-            reconnectTimerRef.current = setTimeout(connect, RECONNECT_INTERVAL);
+            if (mountedRef.current) {
+                reconnectTimerRef.current = setTimeout(connect, RECONNECT_INTERVAL);
+            }
         }
     }, []);
 
     useEffect(() => {
+        mountedRef.current = true;
         connect();
         return () => {
-            if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current);
-            if (wsRef.current) wsRef.current.close();
+            mountedRef.current = false;
+            if (reconnectTimerRef.current) {
+                clearTimeout(reconnectTimerRef.current);
+                reconnectTimerRef.current = null;
+            }
+            if (wsRef.current) {
+                // Remove handlers before closing to prevent ghost reconnects
+                wsRef.current.onclose = null;
+                wsRef.current.onerror = null;
+                wsRef.current.onopen = null;
+                wsRef.current.onmessage = null;
+                wsRef.current.close();
+                wsRef.current = null;
+            }
         };
     }, [connect]);
 
